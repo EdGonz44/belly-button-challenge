@@ -3,33 +3,38 @@ function buildMetadata(sample) {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
 
     // get the metadata field
-
+    const metadata = data.map(d => d.metadata);
+    console.log(metadata);
 
     // Filter the metadata for the object with the desired sample number
-
-
+    const filteredMD = metadata.find(m => m.sample ===sample);
+    console.log(filteredMD);
+    
     // Use d3 to select the panel with id of `#sample-metadata`
-
-
+    const panel = d3.select("#sample-metadata");
+    console.log(panel);
     // Use `.html("") to clear any existing metadata
-
-
+    panel.html("");
+    console.log(panel);
     // Inside a loop, you will need to use d3 to append new
     // tags for each key-value in the filtered metadata.
-
+    Object.entries(filteredMetadata).forEach(([key, value]) => {
+      panel.append("p")
+           .text(`${key}: ${value}`);
+    });
   });
 }
+
 
 // function to build both charts
 function buildCharts(sample) {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
 
     // Get the samples field
-
+    
 
     // Filter the samples for the object with the desired sample number
-
-
+    
     // Get the otu_ids, otu_labels, and sample_values
 
 
