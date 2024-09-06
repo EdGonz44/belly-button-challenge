@@ -1,29 +1,30 @@
 // Build the metadata panel
 function buildMetadata(sample) {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
-
+    console.log(data);
     // get the metadata field
-    const metadata = data.map(d => d.metadata);
-    console.log(metadata);
+    const metadata = data.metadata;
+    // console.log(metadata);
+    const numSample = Number(sample);
 
     // Filter the metadata for the object with the desired sample number
-    const filteredMD = metadata.find(m => m.sample ===sample);
-    console.log(filteredMD);
+    const filteredMD = metadata.find(d => d.id ===numSample);
+    // console.log(filteredMD);
     
     // Use d3 to select the panel with id of `#sample-metadata`
-    const panel = d3.select("#sample-metadata");
-    console.log(panel);
+    const panel = d3.select(`#sample-metadata`);
+    
     // Use `.html("") to clear any existing metadata
     panel.html("");
-    console.log(panel);
+    
     // Inside a loop, you will need to use d3 to append new
     // tags for each key-value in the filtered metadata.
-    Object.entries(filteredMetadata).forEach(([key, value]) => {
+    Object.entries(filteredMD).forEach(([key, value]) => {
       panel.append("p")
            .text(`${key}: ${value}`);
     });
   });
-}
+};
 
 
 // function to build both charts
@@ -32,9 +33,10 @@ function buildCharts(sample) {
 
     // Get the samples field
     const samples = data.samples;
-
+    // console.log(samples);
     // Filter the samples for the object with the desired sample number
     const filteredSamples = samples.find(d => d.id === sample);
+    console.log(filteredSamples);
     // Get the otu_ids, otu_labels, and sample_values
     const otu_ids = filteredSamples.otu_ids;
     const otu_labels = filteredSamples.otu_labels;
@@ -63,7 +65,7 @@ function buildCharts(sample) {
     Plotly.newPlot('bubble', [traceBubble], layoutBubble);
 
     // For the Bar Chart, map the otu_ids to a list of strings for your yticks
-    const bardata = otu_ids.map((id, index) => ({
+    const barData = otu_ids.map((id, index) => ({
       otu_id: id,
       sample_value: sample_values[index],
       otu_label: otu_labels[index]
@@ -100,7 +102,7 @@ function buildCharts(sample) {
     Plotly.newPlot('bar', [traceBar], layoutBar);
 
   });
-}
+};
 
 // Function to run on page load
 function init() {
@@ -110,26 +112,35 @@ function init() {
     const names = data.names;
 
     // Use d3 to select the dropdown with id of `#selDataset`
-const dropdownMenu = d3.select("#selDataset");
+    const dropdownMenu = d3.select("#selDataset");
 
     // Use the list of sample names to populate the select options
     // Hint: Inside a loop, you will need to use d3 to append a new
     // option for each sample name.
-
+    names.forEach((name) => {
+      dropdownMenu.append("option")
+                  .text(name)
+                  .attr("value", name);
+    });
 
     // Get the first sample from the list
-
+    const firstSample = names[0];
 
     // Build charts and metadata panel with the first sample
-
+    buildMetadata(firstSample);
+    buildCharts(firstSample);
   });
-}
+};
 
 // Function for event listener
 function optionChanged(newSample) {
   // Build charts and metadata panel each time a new sample is selected
-
+  d3.json(`/data/${newSample}`).then((data) => {
+    // buildMetadata(newSample);
+    buildCharts(newSample);
+  })
 }
+
 
 // Initialize the dashboard
 init();
