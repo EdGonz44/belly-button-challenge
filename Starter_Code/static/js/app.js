@@ -76,7 +76,7 @@ function buildCharts(sample) {
     })
 
     const top10 = barData.slice(0,10);
-
+    top10.reverse();
 
     // Build a Bar Chart
     // Don't forget to slice and reverse the input data appropriately
@@ -132,8 +132,6 @@ function init() {
   });
 };
 // Function for event listener
-// d3.selectAll("#selDataset").on("change", optionChanged);
-// console.log()
 function optionChanged(newSample) {
   // Build charts and metadata panel each time a new sample is selected
     buildMetadata(newSample);
@@ -143,37 +141,3 @@ function optionChanged(newSample) {
 
 // Initialize the dashboard
 init();
-
-
-
-
-// d3.selectAll("#selDataset").on("change", updatePlotly);
-
-// // This function is called when a dropdown menu item is selected
-// function updatePlotly() {
-
-//   // Use D3 to select the dropdown menu
-//   let dropdownMenu = d3.select("#selDataset");
-
-//   // Assign the value of the dropdown menu option to a variable
-//   let dataset = dropdownMenu.property("value");
-
-//   // Initialize x and y arrays
-//   let x = [];
-//   let y = [];
-
-//   if (dataset === 'dataset1') {
-//     x = [1, 2, 3, 4, 5];
-//     y = [1, 2, 4, 8, 16];
-//   }
-//   else if (dataset === 'dataset2') {
-//     x = [10, 20, 30, 40, 50];
-//     y = [1, 10, 100, 1000, 10000];
-//   }
-
-//   // Note the extra brackets around 'x' and 'y'
-//   Plotly.restyle("plot", "x", [x]);
-//   Plotly.restyle("plot", "y", [y]);
-// }
-
-// init();
