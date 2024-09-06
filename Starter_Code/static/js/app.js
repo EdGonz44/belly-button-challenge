@@ -9,7 +9,7 @@ function buildMetadata(sample) {
 
     // Filter the metadata for the object with the desired sample number
     const filteredMD = metadata.find(d => d.id ===numSample);
-    // console.log(filteredMD);
+    console.log(filteredMD);
     
     // Use d3 to select the panel with id of `#sample-metadata`
     const panel = d3.select(`#sample-metadata`);
@@ -131,16 +131,49 @@ function init() {
     buildCharts(firstSample);
   });
 };
-
 // Function for event listener
+// d3.selectAll("#selDataset").on("change", optionChanged);
+// console.log()
 function optionChanged(newSample) {
   // Build charts and metadata panel each time a new sample is selected
-  d3.json(`/data/${newSample}`).then((data) => {
-    // buildMetadata(newSample);
+    buildMetadata(newSample);
     buildCharts(newSample);
-  })
-}
+};
 
 
 // Initialize the dashboard
 init();
+
+
+
+
+// d3.selectAll("#selDataset").on("change", updatePlotly);
+
+// // This function is called when a dropdown menu item is selected
+// function updatePlotly() {
+
+//   // Use D3 to select the dropdown menu
+//   let dropdownMenu = d3.select("#selDataset");
+
+//   // Assign the value of the dropdown menu option to a variable
+//   let dataset = dropdownMenu.property("value");
+
+//   // Initialize x and y arrays
+//   let x = [];
+//   let y = [];
+
+//   if (dataset === 'dataset1') {
+//     x = [1, 2, 3, 4, 5];
+//     y = [1, 2, 4, 8, 16];
+//   }
+//   else if (dataset === 'dataset2') {
+//     x = [10, 20, 30, 40, 50];
+//     y = [1, 10, 100, 1000, 10000];
+//   }
+
+//   // Note the extra brackets around 'x' and 'y'
+//   Plotly.restyle("plot", "x", [x]);
+//   Plotly.restyle("plot", "y", [y]);
+// }
+
+// init();
